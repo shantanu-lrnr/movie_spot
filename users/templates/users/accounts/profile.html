@@ -1,0 +1,13 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <h2>Welcome {{request.user.username|capfirst}}</h2>
+    <div id="user-list-container" class="my-4">
+        {% include "users/lists/partials/_user_list.html" %}
+    </div>
+    
+</div>
+
+
+{% endblock content %}

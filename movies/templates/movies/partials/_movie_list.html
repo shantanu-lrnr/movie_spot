@@ -1,0 +1,47 @@
+{% for movie in movies %}
+        <div class="col-md mb-1">
+        <a href="{% url "movie_detail" movie.id %}" class="text-decoration-none">
+        <div class="card" style="width: 18rem;">
+            <img src="{% if movie.poster_path %}https://image.tmdb.org/t/p/w500/{{movie.poster_path}}{% else %}https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930{% endif %} " class="card-img-top" alt="{{movie.title}}">
+            <div class="card-body">
+            <h5 class="card-title">{{movie.original_title}}</h5>
+            <p class="card-text">{{movie.vote_average|floatformat:1}}/10</p>
+            {% if user.is_authenticated %}
+                    {% if user_lists %}
+                        <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Add to list:
+                        </button>
+
+                        <ul class="dropdown-menu" >
+                            {% for list in user_lists %}
+                            <li >
+                                <form hx-post="{% url "add_to_list" list_id=list.id movie_id=movie.id movie_name=movie.title %}" hx-trigger="click" hx-target="#toast-container" hx-swap="beforeend">
+                                {% csrf_token %}
+                                <button class="dropdown-item">{{list.name}}</button>
+                                </form>
+                            </li>
+                            {% endfor %}
+                            <form action="{% url "profile" %}" method="get">
+                                <button class="btn">➕ List</button>
+                            </form>
+                        </ul>
+                        </div>
+                    {% endif %}
+            {% endif %}
+            </div>
+        </div>
+        </a>
+        </div>
+{% endfor %}
+
+{% if has_next %}
+
+<div id="scroll-trigger"
+hx-get = "{% url "landing_page" %}?category={{category}}&search={{search_query}}&page={{next_page}}"
+hx-trigger="revealed"
+hx-target = "#movie-container"
+hx-swap="beforeend"
+></div>
+
+{% endif %}

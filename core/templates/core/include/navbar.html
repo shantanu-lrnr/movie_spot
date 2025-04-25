@@ -1,0 +1,21 @@
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url "landing_page" %}">Movies Spot</a>
+      <div class="d-flex">
+        {% if user.is_authenticated %}
+            <li class="d-inline me-3" style="margin-top:2px;">
+              <a class="nav-link text-light" href="{% url "profile" %}">Profile</a>
+            </li>
+            <form action="{% url "logout" %}" method="post">
+              {% csrf_token %}
+              <button style="border:none; background:none" class="text-light nav-item">Logout</button>
+            </form>
+        {% else %}
+
+        <li class="d-inline">
+        <a class="nav-link text-light" href="{% url "login" %}">Login</a>
+        </li>
+        {% endif %}
+      </div>
+    </div>
+</nav>

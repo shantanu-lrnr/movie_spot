@@ -1,0 +1,21 @@
+<ul class="list-group">
+    {% for list in user_lists %}
+        <li class="list-group-item d-flex"><a href="{% url "list_detail" list.id %}">{{list.name}}</a>
+            {% include "users/modals/_list_delete_confirmation.html" %}
+            <button class="btn" data-bs-toggle="modal" data-bs-target="#delete-list-modal-{{list.id}}">❌</button>
+            <button class="btn">🖋️</button>
+        </li>
+    {% endfor %}
+</ul>
+{% if user_lists.count == 0 %}
+    <p>No lists available.</p>
+{% endif %}
+
+<button 
+    hx-get="{% url "create_list" %}" 
+    hx-swap="innerHtml"
+    hx-target="#create-form-container"
+    class="btn"
+    {% comment %} hx-on::after-request="this.remove()" {% endcomment %}
+>➕ List</button>
+<div id="create-form-container"></div>
